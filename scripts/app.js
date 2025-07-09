@@ -3,33 +3,49 @@ function init(){
     const cells = []
     const gridWidth = 10 //in one line
     const numberOfCells = gridWidth * gridWidth //10*10 == 100 cells
+    const scoreElm = document.querySelector('#score-display')
+    const audioEln = document.querySelector('#quack')
+    
     let duckPosition = 4 //assigning a position for the duck
     let score = 0
-    const scoreElm = document.querySelector('#score-display')
+    let totalDucks = 0
 
     function addDuck(){
         cells[duckPosition].classList.add('duck')//adding the class 'duck' to the position(index, not the actual cell)
+        totalDucks++
     }
 
     function removeDuck(){
         cells[duckPosition].classList.remove('duck')//to remove the duck at a given index
     }
 
+    function endGame() {
+        alert('game ended, your score is ' + score)
+        score = 0
+        scoreElm.textContent = 'Your score is 0' 
+        totalDucks = 0
+    }
+
     function play(){
         setInterval(() => {
-            removeDuck()
-            duckPosition = Math.floor(Math.random()*numberOfCells)
-            addDuck()
-        },3000)
-
+            if(totalDucks < 10){
+                removeDuck()
+                duckPosition = Math.floor(Math.random()*numberOfCells)
+                addDuck()
+            } else {
+                endGame()
+            }
+        },2000)
     }
 
     function handleClick(event) {
         //console.log('handle click has run!')
         if (event.target.classList.contains('duck')){
+            audioEln.pause()
+            audioEln.currentTime = 0
             score += 10
-            scoreElm.textContent = `Your score is ' ${score}`
-            console.log(score)
+            scoreElm.textContent = `Your score is ${score}`
+            audioEln.play()
         }
     }
 
@@ -48,7 +64,7 @@ function init(){
     }
 
     createGrid()
-    play()
+    // play()
 }
 
 document.addEventListener('DOMContentLoaded', init)
