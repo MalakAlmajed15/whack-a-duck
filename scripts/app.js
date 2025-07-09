@@ -26,16 +26,20 @@ function init(){
         totalDucks = 0
     }
 
+    function placeRandomDuck(){
+        removeDuck()
+        duckPosition = Math.floor(Math.random()*numberOfCells)
+        addDuck()
+    }
+
     function play(){
         setInterval(() => {
             if(totalDucks < 10){
-                removeDuck()
-                duckPosition = Math.floor(Math.random()*numberOfCells)
-                addDuck()
+                placeRandomDuck()
             } else {
                 endGame()
             }
-        },2000)
+        },3000)
     }
 
     function handleClick(event) {
@@ -46,6 +50,8 @@ function init(){
             score += 10
             scoreElm.textContent = `Your score is ${score}`
             audioEln.play()
+            placeRandomDuck()//when the duck is clicked it is placed in random place directly
+            console.log(score)
         }
     }
 
